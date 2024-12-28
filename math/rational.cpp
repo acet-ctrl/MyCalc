@@ -45,7 +45,7 @@ Rational Rational::abs() const {
   return Rational(std::abs(numerator_), denominator_);
 }
 
-Rational Rational::pow(int n) const {
+Rational Rational::pow(uint32_t n) const {
   return Rational(std::pow(numerator_, n), std::pow(denominator_, n));
 }
 

@@ -1,7 +1,5 @@
 #pragma once
 
-#include <sys/stat.h>
-
 #include <memory>
 
 #include "rational.h"
@@ -12,17 +10,18 @@ class Matrix {
   Matrix(int, int);
   Matrix(int);
   Matrix() = delete;
-  ~Matrix();
 
   static Matrix Identity(int);
 
   Rational& operator()(int, int);
   Rational operator()(int, int) const;
 
+  Rational dotRow(int, int) const;
+  Rational dotCol(int, int) const;
+
   friend std::ostream& operator<<(std::ostream&, const Matrix&);
   friend std::istream& operator>>(std::istream&, Matrix&);
 
-  friend class ElementaryOperation;
   friend class SwapOperation;
   friend class MultiplyOperation;
   friend class AddOperation;
@@ -40,51 +39,52 @@ class ElementaryOperation {
  public:
   virtual ~ElementaryOperation() = default;
 
-  virtual ElementaryOperation& rowOperate(Matrix& matrix) = 0;
-  virtual ElementaryOperation& colOperate(Matrix& matrix) = 0;
-
+  ElementaryOperation& operate(Matrix& matrix);
   virtual ElementaryOperation& inverse() = 0;
 
  protected:
-  ElementaryOperation(const Rational& value) : value_(value) {};
+  ElementaryOperation(bool isRowOp) : isRowOp_(isRowOp) {};
 
-  Rational value_;
+  virtual ElementaryOperation& rowOperate(Matrix& matrix) = 0;
+  virtual ElementaryOperation& colOperate(Matrix& matrix) = 0;
+
+  bool isRowOp_;
 };
 
 class SwapOperation : public ElementaryOperation {
  public:
+  SwapOperation(bool, int, int);
   SwapOperation(int, int);
-
-  SwapOperation& rowOperate(Matrix& matrix) override;
-  SwapOperation& colOperate(Matrix& matrix) override;
 
   SwapOperation& inverse() override;
 
  private:
+  SwapOperation& rowOperate(Matrix& matrix) override;
+  SwapOperation& colOperate(Matrix& matrix) override;
+
   int i_;
   int j_;
 };
 
 class MultiplyOperation : public ElementaryOperation {
  public:
+  MultiplyOperation(bool, int, const Rational&);
   MultiplyOperation(int, const Rational&);
-
-  MultiplyOperation& rowOperate(Matrix& matrix) override;
-  MultiplyOperation& colOperate(Matrix& matrix) override;
 
   MultiplyOperation& inverse() override;
 
  private:
   int i_;
   Rational scalar_;
+
+  MultiplyOperation& rowOperate(Matrix& matrix) override;
+  MultiplyOperation& colOperate(Matrix& matrix) override;
 };
 
 class AddOperation : public ElementaryOperation {
  public:
+  AddOperation(bool, int, int, const Rational&);
   AddOperation(int, int, const Rational&);
-
-  AddOperation& rowOperate(Matrix& matrix) override;
-  AddOperation& colOperate(Matrix& matrix) override;
 
   AddOperation& inverse() override;
 
@@ -92,5 +92,8 @@ class AddOperation : public ElementaryOperation {
   int i_;
   int j_;
   Rational scalar_;
+
+  AddOperation& rowOperate(Matrix& matrix) override;
+  AddOperation& colOperate(Matrix& matrix) override;
 };
 }  // namespace math

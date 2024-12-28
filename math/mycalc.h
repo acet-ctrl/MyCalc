@@ -1,6 +1,8 @@
 #pragma once
 
 #include "matrix.h"
+#include "rational.h"
+
 
 namespace math {
 void plu_decomposition(Matrix&);

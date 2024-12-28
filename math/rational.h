@@ -17,7 +17,7 @@ class Rational {
   Rational operator/(const Rational&) const;
 
   Rational abs() const;
-  Rational pow(int) const;
+  Rational pow(uint32_t) const;
 
   Rational& operator+=(const Rational&);
   Rational& operator-=(const Rational&);
