@@ -12,8 +12,6 @@ class Matrix {
   Matrix(int, int);
   Matrix(int);
   Matrix() = delete;
-  Matrix(const Matrix&) = delete;
-  Matrix(Matrix&&) = default;
   ~Matrix();
 
   static Matrix Identity(int);
@@ -35,7 +33,7 @@ class Matrix {
  private:
   int rows_;
   int cols_;
-  Rational* data_;
+  std::shared_ptr<Rational[]> data_;
 };
 
 class ElementaryOperation {
