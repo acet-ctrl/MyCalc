@@ -7,7 +7,7 @@ class Rational {
  public:
   Rational(int, int);
   Rational(int);
-  Rational() = default;
+  Rational();
 
   Rational operator-() const;
 
@@ -15,6 +15,9 @@ class Rational {
   Rational operator-(const Rational&) const;
   Rational operator*(const Rational&) const;
   Rational operator/(const Rational&) const;
+
+  Rational abs() const;
+  Rational pow(int) const;
 
   Rational& operator+=(const Rational&);
   Rational& operator-=(const Rational&);

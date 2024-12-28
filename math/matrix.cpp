@@ -11,7 +11,15 @@ Matrix::Matrix(int rows, int cols) : rows_(rows), cols_(cols) {
   data_ = new Rational[rows * cols];
 }
 
+Matrix::Matrix(int n) : Matrix(n, n) {}
+
 Matrix::~Matrix() { delete[] data_; }
+
+Matrix Matrix::Identity(int n) {
+  Matrix matrix(n);
+  for (int i = 0; i < n; ++i) matrix(i, i) = 1;
+  return matrix;
+}
 
 Rational& Matrix::operator()(int i, int j) {
   if (i < 0 || i >= rows_ || j < 0 || j >= cols_)

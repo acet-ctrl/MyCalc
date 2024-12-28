@@ -12,6 +12,8 @@ Rational::Rational(int numerator, int denominator)
 
 Rational::Rational(int numerator) : numerator_(numerator), denominator_(1) {}
 
+Rational::Rational() : numerator_(0), denominator_(1) {}
+
 Rational Rational::operator-() const {
   return Rational(-numerator_, denominator_);
 }
@@ -37,6 +39,14 @@ Rational Rational::operator/(const Rational& rational) const {
   if (!rational.numerator_) throw std::invalid_argument("Division by zero");
   return Rational(numerator_ * rational.denominator_,
                   denominator_ * rational.numerator_);
+}
+
+Rational Rational::abs() const {
+  return Rational(std::abs(numerator_), denominator_);
+}
+
+Rational Rational::pow(int n) const {
+  return Rational(std::pow(numerator_, n), std::pow(denominator_, n));
 }
 
 Rational& Rational::operator+=(const Rational& rational) {

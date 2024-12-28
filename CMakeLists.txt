@@ -3,5 +3,5 @@ project(mycalc)
 
 add_subdirectory(math)
 
-add_executable(mycalc mycalc.cpp)
+add_executable(mycalc main.cpp)
 target_link_libraries(mycalc SHARED mathlib)

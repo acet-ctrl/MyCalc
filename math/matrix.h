@@ -1,5 +1,7 @@
 #pragma once
 
+#include <sys/stat.h>
+
 #include <memory>
 
 #include "rational.h"
@@ -8,7 +10,13 @@ namespace math {
 class Matrix {
  public:
   Matrix(int, int);
+  Matrix(int);
+  Matrix() = delete;
+  Matrix(const Matrix&) = delete;
+  Matrix(Matrix&&) = default;
   ~Matrix();
+
+  static Matrix Identity(int);
 
   Rational& operator()(int, int);
   Rational operator()(int, int) const;
@@ -20,6 +28,9 @@ class Matrix {
   friend class SwapOperation;
   friend class MultiplyOperation;
   friend class AddOperation;
+
+  int rows() const { return rows_; }
+  int cols() const { return cols_; }
 
  private:
   int rows_;
